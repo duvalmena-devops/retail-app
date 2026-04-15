@@ -9,11 +9,20 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest  # Runner aislado en la nube
+    env: 
+     DATABASE_ENGINE: ${{vars.DATABASE_ENGINE}}
+     DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
 
     # Acciones secuenciales
     steps:
       - name: Clonar el repositorio
         uses: actions/checkout@v3
+
+        name: Ejecutar Comando SH
+        run: |
+          echo "Ejecutando comando SH con variables de entorno..."
+          echo "DATABASE_ENGINE: $DATABASE_ENGINE"
+          echo "DATABASE_PASSWORD: $DATABASE_PASSWORD"
 
       - name: Simular Análisis de Calidad
         run: |
