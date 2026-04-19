@@ -2,7 +2,7 @@ name: Deploy static site to GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
   workflow_dispatch:
 
 permissions:
@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -25,12 +25,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Reemplazar variable en config.js
-        run: |
-          echo "window.ENV = { API_URL: '${{ vars.API_URL }}', API_TOKEN: '${{ secrets.API_TOKEN }}' };" > src/js/config.js
-
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
+      - name: Add .nojekyll
+        run: touch src/.nojekyll
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
